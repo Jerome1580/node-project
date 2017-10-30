@@ -1,16 +1,18 @@
-const http=require('http');
-const fs=require('fs')
+const http = require('http');
+const fs = require('fs')
 
-var server = http.createServer(function(req,res){
+var server = http.createServer(function(req, res) {
 
-    var filename = '../www' + req.url
+    var filename = '.' + req.url
+    console.log(req.url)
 
-    fs.readFile(filename,function(err,data){
-        // Òì²½²Ù×÷
-        if(err){
-                console.log(err)
+    fs.readFile(filename, function(err, data) {
+        console.log(filename)
+            // Ã’Ã¬Â²Â½Â²Ã™Ã—Ã·
+        if (err) {
+            console.log(err)
             res.write('404')
-        }else{
+        } else {
             res.write(data)
         }
         res.end();
@@ -20,5 +22,5 @@ var server = http.createServer(function(req,res){
 
 })
 
-// ¼àÌı -µÈ´ı
+//  ç›‘å¬
 server.listen(8080)

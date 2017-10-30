@@ -5,15 +5,11 @@ const urlLib=require('url')
 
 var server = http.createServer(function(req,res){
 
-    // post --req
+    var obj = urlLib.parse(req.url,true)
 
-    var str =''
-
-    // data - 有一段数据到达（很多次）
-    req.on('data',function(data){})
-    // end - 数据全部到达（一次）
-    req.on('end',function(){})
-
+    console.log(obj)
+    console.log(obj.pathname)
+    console.log(obj.query)
     res.write('aaa')
     res.end()
 
