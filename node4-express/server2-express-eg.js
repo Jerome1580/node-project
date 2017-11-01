@@ -33,7 +33,7 @@ server.post('/b',function(req,res){
 
 
 // 可以把一个个接口展开
-server.get('/changePass',function(req.res){})
+server.get('/changePass',function(req,res){})
 
 
 

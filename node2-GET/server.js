@@ -5,6 +5,7 @@ const urlLib=require('url')
 
 var server = http.createServer(function(req,res){
 
+
     var obj = urlLib.parse(req.url,true)
 
     console.log(obj)
