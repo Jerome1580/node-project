@@ -1,0 +1,13 @@
+html
+    head
+    script
+        -var a=1;
+        -var b=3;
+        include a.js
+
+    body
+        div.main-pannel
+            |a
+            span(index=2,style=style) 这是一个span#{a+b}
+            input(type=submit,value=2)
+            p(class=arr) 这是包含class的p元素
