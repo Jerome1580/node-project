@@ -7,6 +7,7 @@ const fs=require('fs');
 const pathLib=require('path');
 const consolidate=require('consolidate');
 const mysql=require('mysql');
+const common = require('./libs/common')
 
 // 连接池
 const db = mysql.createPool({host:'localhost',user:'root',password:'123456',database:'blog'});
@@ -44,20 +45,68 @@ server.engine('html',consolidate.ejs)
 
 
 // 接受用户请求
-server.get('/',(req,res)=>{
-
-
-    // 查询banner的东西
+server.get('/',(req,res,next)=>{
+     // 查询banner的东西
     db.query('SELECT * FROM banner_table' ,(err,data)=>{
         if(err){
-            console.log(err)
             res.status(500).send('database error').end();
-
         }else{
-            console.log(data)
-            res.render('index.ejs',{banners:data})
+            res.banners=data;
+            next();
         }
     })
+
+})
+
+
+server.get('/',(req,res,next)=>{
+
+    // 查询文章列表
+   db.query('SELECT ID,title,summary FROM article_table',(err,data)=>{
+    if(err){
+        res.status(500).send('database error').end();
+    }else{
+        res.articles=data;
+
+        next();
+    }
+   })
+})
+
+server.get('/',(req,res)=>{
+
+    res.render('index.ejs',{banners:res.banners,articles:res.articles})
+
+})
+
+
+server.get('/article',(req,res)=>{
+    if(req.query.id){
+
+        db.query(`SELECT * FROM article_table WHERE ID=${req.query.id}`,(err,data)=>{
+            if(err){
+                 res.status(500).send('数据有问题').end();
+            }else{
+                if(data.length==0){
+
+                    res.status(404).send('您请求的文章找不到').end();
+
+                }else{
+                    var articleData = data[0];
+                    articleData.sDate = common.time2date(articleData.post_time);
+                    articleData.content=articleData.content.replace(/^/gm, '<p>').replace(/$/gm, '</p>');
+
+                    res.status(200).render('conText.ejs',{articleData:articleData})
+                }
+            }
+        })
+
+    }else{
+        res.status(404).send('您请求的文章找不到').end();
+    }
+
+
+
 })
 
 // 4.static数据
