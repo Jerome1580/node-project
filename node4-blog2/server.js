@@ -14,6 +14,7 @@ server.listen(8080);
 
 // 1. 获取请求数据
 // get 自带
+server.use(bodyParser.urlencoded({extended:false}))
 server.use(multerObj.any())
 // 2. cookie , session
 server.use(cookieParser());
@@ -40,9 +41,8 @@ server.engine('html',consolidate.ejs);
 
 
 // 4. route
-
-server.use('/admin',require('./route/web/1.js')());
-server.use('/blog',require('./route/web/2.js')());
+server.use('/',require('./route/web.js')())
+server.use('/admin',require('./route/admin.js')())
 
 
 
