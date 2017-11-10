@@ -41,7 +41,7 @@ server.engine('html',consolidate.ejs);
 
 
 // 4. route
-server.use('/',require('./route/web.js')())
+server.use('/',require('./route/web')())
 server.use('/admin',require('./route/admin/index.js')())
 
 
